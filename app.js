@@ -1,5 +1,6 @@
 const express = require("express");
 const categories = require("./data");
+const PORT = 8025;
 const app = express(); //instance of express
 
 app.use(express.json()); // recieve json info
@@ -30,9 +31,13 @@ app.get("/api/category/;id", (rrq, res) => {
   const category = categories.find((category) => {
     if (category.id == id) return true;
   });
-
+  if (!category) {
+    return res.status(404).json({ error: "category Not found" });
+  } else {
+    return res.status(200).json({ data: category });
+  }
   console.log(category);
 });
-app.listen(8025, () => {
-  console.log("app is work on localhost 8025");
+app.listen(PORT, () => {
+  console.log(` Server is running on port ${PORT}`);
 });
