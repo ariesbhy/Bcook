@@ -6,11 +6,18 @@ const {
   updateCategory,
   deleteCategory,
 } = require("./categories.controller");
+const upload = require("../../middleware/multer");
 const categoriesRouter = express.Router();
 
-categoriesRouter.get("/api/categories", getAllCategories);
+categoriesRouter.get(
+  "/api/categories",
+  (req, res, next) => {
+    console.log("GETTING ALL CATEGORIES");
+  },
+  getAllCategories
+);
 
-categoriesRouter.post("/api/category", createCategory);
+categoriesRouter.post("/api/category", upload.single("image"), createCategory);
 
 categoriesRouter.get("/api/category/:id", getOneCategory);
 

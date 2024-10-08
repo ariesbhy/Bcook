@@ -1,27 +1,31 @@
 const categories = require("../../data");
 const CategorySchema = require("../../models/CategorySchema");
 
-const getAllCategories = async (req, res) => {
+const getAllCategories = async (req, res, next) => {
   try {
     const categories = await CategorySchema.find();
     return res.status(200).json({ data: categories });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: error });
+    next(error);
   }
 };
 
-const createCategory = async (req, res) => {
+const createCategory = async (req, res, next) => {
   try {
     const categoryInfo = req.body;
+    console.log(req.body);
+    if (req.file) {
+      req.body.image = req.file.path;
+    }
     const newCategory = await CategorySchema.create(categoryInfo);
     res.status(201).json({ data: newCategory });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    next(error);
   }
 };
 
-const getOneCategory = async (req, res) => {
+const getOneCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
     const categoryFound = await CategorySchema.findById(id);
@@ -31,21 +35,21 @@ const getOneCategory = async (req, res) => {
       return res.status(200).json({ data: categoryFound });
     }
   } catch (error) {
-    return res.status(500).json({ error: error });
+    next(error);
   }
 };
 
-const deleteCategory = async (req, res) => {
+const deleteCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteCategory = await CategorySchema.findByIdAndDelete(id);
     return res.status(200).json({ data: deleteCategory });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    rnext(error);
   }
 };
 
-const updateCategory = async (req, res) => {
+const updateCategory = async (req, res, next) => {
   try {
     const { id } = req.params;
     const updateCategory = await CategorySchema.findByIdAndUpdate(id, req.body);
@@ -55,7 +59,7 @@ const updateCategory = async (req, res) => {
     }
     return res.status(200).json({ data: updateCategory2 });
   } catch (error) {
-    return res.status(500).json({ error: error });
+    next(error);
   }
 };
 
