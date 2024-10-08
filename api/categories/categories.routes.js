@@ -5,7 +5,7 @@ const {
   getOneCategory,
   updateCategory,
   deleteCategory,
-} = require("./catecories.controller");
+} = require("./categories.controller");
 const categoriesRouter = express.Router();
 
 categoriesRouter.get("/api/categories", getAllCategories);
