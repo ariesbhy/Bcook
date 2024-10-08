@@ -5,6 +5,7 @@ const CategorySchema = new Schema({
   image: { type: String },
   name: { type: String },
   description: { type: String },
+  user: { type: Schema.Types.ObjectId, ref: "User" },
 });
 
 module.exports = model("Category", CategorySchema);

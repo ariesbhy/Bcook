@@ -17,7 +17,11 @@ categoriesRouter.get(
   getAllCategories
 );
 
-categoriesRouter.post("/api/category", upload.single("image"), createCategory);
+categoriesRouter.post(
+  "/api/category/:userId",
+  upload.single("image"),
+  createCategory
+);
 
 categoriesRouter.get("/api/category/:id", getOneCategory);
 

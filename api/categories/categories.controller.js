@@ -13,13 +13,21 @@ const getAllCategories = async (req, res, next) => {
 
 const createCategory = async (req, res, next) => {
   try {
-    const categoryInfo = req.body;
-    console.log(req.body);
+    const { userId } = req.params;
+    const categoryData = { ...req.body, user: userId };
+    console.log("newcategory", categoryData);
     if (req.file) {
       req.body.image = req.file.path;
     }
-    const newCategory = await CategorySchema.create(categoryInfo);
-    res.status(201).json({ data: newCategory });
+    const newCategory = await CategorySchema.create(categoryData);
+
+    const user = await User.findByIdAndUpdate(id, {
+      $push: { categories: newCategory._id },
+    });
+    const user2 = await User.findById(userId);
+    user2.categories.push(newCategory);
+    await user2.save();
+    res.status(201).json({ newCategory });
   } catch (error) {
     next(error);
   }
